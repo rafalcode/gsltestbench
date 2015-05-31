@@ -6,13 +6,20 @@ LIBDIRS=/usr/local/lib
 LIBSYMBS=-lgsl -latlas -lcblas -lm
 LIBSYMBS1=-lgsl -lgoto2 -lgfortran -lm
 LIBSYMBS2=-lgsl -lgslcblas -lm
-EXES= allperms rnperm matv vecv2 comb1 comb2 p0 p1 p2 ms1 ms2 qrex p0a
+LIBSIMP=-lgsl -lm # you may be thinking this will work. But most often it will not.
+EXES= allperms rnperm matv vecv2 comb1 comb2 p0 p1 p2 ms1 ms2 qrex p0a spli_1
 
 allperms: allperms.c
 	$(CC) $(FLAGS) -o $@ $^ -I$(INCDIRS) -L$(LIBDIRS) $(LIBSYMBS)
 
 rnperm: rnperm.c
 	# $(CC) $(FLAGS) -o $@ $^ -I$(INCDIRS) -L$(LIBDIRS) $(LIBSYMBS)
+	$(CC) $(FLAGS) -o $@ $^ $(LIBSYMBS2)
+
+# spli_1, spline demonstration, takes 10 points and generate some 1000 pts from the derived spline.
+# feed output to text file and then "graph -T ps <in >out" (i.e. plotutils program)
+# to see its graph 
+spli_1: spli_1.c
 	$(CC) $(FLAGS) -o $@ $^ $(LIBSYMBS2)
 
 # Used to be called vecv.c, but it's really about matrix views, so changed.
